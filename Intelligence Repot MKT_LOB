@@ -1,0 +1,63 @@
+SELECT
+    jou.JourneyName,
+    jou.VersionNumber,
+    j.EmailName,
+    jou.JourneyStatus,
+    d.MKT_LOB,
+    COUNT(DISTINCT CONCAT(s.JobID, s.SubscriberKey)) AS Sent,
+    COUNT(DISTINCT CONCAT(o.JobID, o.SubscriberKey)) AS Opened,
+    COUNT(DISTINCT CONCAT(c.JobID, c.SubscriberKey)) AS Clicked,
+    COUNT(DISTINCT CONCAT(b.JobID, b.SubscriberKey)) AS Bounced,
+    COUNT(DISTINCT CONCAT(u.JobID, u.SubscriberKey)) AS Unsubscribed
+
+FROM _Job j
+
+LEFT JOIN _Sent s
+    ON j.JobID = s.JobID
+
+LEFT JOIN [260507_REF3114138_Q1_VirtualPromo_IFP_MEM_PR] d
+    ON s.SubscriberKey = d.PLN_MBR_BK
+
+LEFT JOIN _Open o
+    ON s.JobID = o.JobID
+    AND s.ListID = o.ListID
+    AND s.BatchID = o.BatchID
+    AND s.SubscriberID = o.SubscriberID
+    AND o.IsUnique = 1
+
+LEFT JOIN _Click c
+    ON s.JobID = c.JobID
+    AND s.ListID = c.ListID
+    AND s.BatchID = c.BatchID
+    AND s.SubscriberID = c.SubscriberID
+    AND c.IsUnique = 1
+
+LEFT JOIN _Bounce b
+    ON s.JobID = b.JobID
+    AND s.ListID = b.ListID
+    AND s.BatchID = b.BatchID
+    AND s.SubscriberID = b.SubscriberID
+    AND b.IsUnique = 1
+
+LEFT JOIN _Unsubscribe u
+    ON s.JobID = u.JobID
+    AND s.ListID = u.ListID
+    AND s.BatchID = u.BatchID
+    AND s.SubscriberID = u.SubscriberID
+    AND u.IsUnique = 1
+
+LEFT JOIN _JourneyActivity ja
+    ON j.TriggererSendDefinitionObjectID = ja.JourneyActivityObjectID
+
+LEFT JOIN _Journey jou
+    ON ja.VersionID = jou.VersionID
+
+WHERE jou.JourneyName = '260507_REF3114138_Q2_VirtualPromo_IFP_MEM_PR'
+  AND d.MKT_LOB IN ('HMO-V','HMO-IP','PPO')
+
+GROUP BY
+    jou.JourneyName,
+    jou.VersionNumber,
+    jou.JourneyStatus,
+    j.EmailName,
+    d.MKT_LOB
