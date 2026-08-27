@@ -1,0 +1,13 @@
+SELECT Distinct
+oeb.PLN_MBR_BK,
+oeb.EmailAddress,
+bue.JobID,
+bue.Reason,
+bue.EventDate
+FROM
+[230616_REF1145403_SDOH_OnEx_IFP_MEM_OP] oeb
+LEFT JOIN
+[Not Sent Tracking Extract] bue
+ON
+oeb.PLN_MBR_BK = bue.SubscriberKey
+Where bue.JobID = 544190
