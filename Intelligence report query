@@ -1,0 +1,22 @@
+SELECT 
+    jou.JourneyName,
+    jou.VersionNumber,
+    jou.JourneyStatus,
+    COUNT(s.SubscriberKey) AS Sent,
+    COUNT(o.SubscriberKey) AS Opened,
+    COUNT(c.SubscriberKey) AS Clicked,
+    COUNT(b.SubscriberKey) AS Bounced,
+    COUNT(u.SubscriberKey) AS Unsubscribed
+FROM
+    _Journey AS jou
+    LEFT JOIN _Sent AS s ON jou.JourneyID = s.TriggererSendDefinitionObjectID
+    LEFT JOIN _Open AS o ON s.JobID = o.JobID AND s.ListID = o.ListID AND s.BatchID = o.BatchID AND s.SubscriberKey = o.SubscriberKey
+    LEFT JOIN _Click AS c ON s.JobID = c.JobID AND s.ListID = c.ListID AND s.BatchID = c.BatchID AND s.SubscriberKey = c.SubscriberKey
+    LEFT JOIN _Bounce AS b ON s.JobID = b.JobID AND s.ListID = b.ListID AND s.BatchID = b.BatchID AND s.SubscriberKey = b.SubscriberKey
+    LEFT JOIN _Unsubscribe AS u ON s.JobID = u.JobID AND s.ListID = u.ListID AND s.BatchID = u.BatchID AND s.SubscriberKey = u.SubscriberKey
+WHERE
+        jou.JourneyName = '231226_REF1278505_AdventistGoodNews_XLOB_MEM_OP'
+GROUP BY
+    jou.JourneyName,
+    jou.VersionNumber,
+    jou.JourneyStatus
