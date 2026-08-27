@@ -1,0 +1,62 @@
+
+
+Content Builder>0_Email Design System>Email Block Library 2024>Library>2-Production
+
+Master Template = B$C Email Template - Prod - 1.0.1
+Master Template Structure
+2-Production
+  - Components
+  - Footers
+  - Headers
+  - Lists
+  - Marquees
+  - Text
+  - Utilities
+
+Content Builder\1_Email Campaigns\2025\Member 2025\Q3 2025\REF2605650 - YB Spotlight - July\REF2605650 - YB Spotlight - July
+Folder Example
+  REF2605650 - YB Spotlight - July - where template resides 
+  Content Blocks
+  Disclaimers
+  Images
+
+
+
+  		    9/1	9/2	9/3	9/4
+Day Part	Mon	Tue	Wed	Thu
+     8am	Done	 	TBD	 
+	9am	 	 	 	39740
+	10am	 	 	 	6800
+	11am	292	 		 
+	12pm	 	 		 
+	1pm				 
+	2pm	    332	281		
+	3pm	 	1,677		
+	4pm	 	 		TBD
+	5pm	 	 	886	
+	6pm	 	 	 	 
+	7pm	 	 	 	
+	 TOTAL 	 624 	 1,958 	 886 	 46,540 
+
+
+      9/1 - Medicare Pre-AEP 2026 Direct Sales Agent SSA Offer - Triggered Send to Prospects - 4 of them (REF2727350, DAP185094) - activated by  
+9/1 - XLOB (IFP, SB) Off Exchange Age Out / Turning Age 26 Member (Subscriber/Parent) Monthly File-Drop (REF1858717 , DAP185064) - 292 Members
+9/1 - IFP Age Out / Turning Age 19 Member (Subscriber/Parent) Monthly File-Drop (REF2403650, DAP184335) - 332 Members
+9/2 - Medicare Stars "Rx Before Call" Adherence Member Email (2025 material id update - REF2433703, DAP175547, Languages: English, Spanish, Chinese) - 281 Members
+9/2 - IFP "Rx Before Call" Adherence Email (2025 material id update - REF2600450, DAP177828, Languages: English, Spanish, Chinese) - 1677 Members
+9/3 - XLOB Fire Emergency Member Email (Blue, TCU, Salt, 1-4, Root, & Cedar Fires, REF2145851, DAP185154, Data Keys: COM, ASO, CLP, MSP, CLP-GMAD, and MAD) - 886 Members
+9/3 - Medicare Pre-AEP 2026 SSA Medicare Offer Autoresponder Journey (REF2726798, DAP185080)
+
+
+Audience	            Color
+Brokers	                Yellow
+Employers	            Yellow
+Medicare Members (include Med Supp) 	Purple
+IFP Members	            Pink
+Premier Account Members	Blue
+IFP Prospects           Light Blue
+Medicare Prospects	     Gray
+Emergency campaigns	Highlighter Yellow
+Everything else is your choice. 	
+
+Every Thursday populate deployment Calendar
