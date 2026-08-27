@@ -1,0 +1,11 @@
+SELECT 
+JourneyStatus,
+JourneyName,
+LastPublishedDate,
+JourneyID,
+ModifiedDate,
+VersionID,
+VersionNumber,
+CreatedDate
+FROM _Journey
+Where JOURNEYNAME = '230616_REF1145403_SDOH_OnEx_IFP_MEM_OP'
