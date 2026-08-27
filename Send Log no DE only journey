@@ -1,0 +1,20 @@
+SELECT j.journeyname,
+       j.versionnumber,
+       ja.activityname  AS [EmailName],
+       s.eventdate      AS [SendTime],
+       su.emailaddress,
+       su.subscriberkey AS [ContactKey],
+              s.subscriberkey,
+       s.subscriberid   AS [ContactID],
+       s.jobid,
+       s.listid,
+       s.batchid
+FROM   [_sent] AS s
+       FULL JOIN [_journeyactivity] AS ja
+               ON s.triggerersenddefinitionobjectid = ja.journeyactivityobjectid
+       FULL JOIN [_journey] AS j
+               ON ja.versionid = j.versionid
+       FULL JOIN [_subscribers] AS su
+               ON s.subscriberid = su.subscriberid
+WHERE        j.journeyname = '2305_REF1235853_RxBeforeCall_MC_MEM_PR'
+AND j.VERSIONNUMBER = 4
