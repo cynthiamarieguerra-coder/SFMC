@@ -1,0 +1,48 @@
+SELECT PLN_MBR_BK, Organization, MKT_LOB, EmailAddress
+FROM [2305_REF1235853_RxBeforeCall_MC_MEM_PR]
+WHERE MKT_LOB = 'SP_PCC' AND Organization = 'Blue Shield of California'
+
+SELECT PLN_MBR_BK, Organization, MKT_LOB, EmailAddress
+FROM [2305_REF1235853_RxBeforeCall_MC_MEM_PR]
+WHERE MKT_LOB = 'SP_PCC' OR Organization = 'Blue Shield of California'
+
+SELECT PLN_MBR_BK, Organization, MKT_LOB, EmailAddress
+FROM [2305_REF1235853_RxBeforeCall_MC_MEM_PR]
+WHERE NOT MKT_LOB = 'PCC'
+
+SELECT TOP 400
+PLN_MBR_BK, Organization, MKT_LOB, EmailAddress
+FROM [2305_REF1235853_RxBeforeCall_MC_MEM_PR]
+WHERE NOT MKT_LOB = 'PCC'
+ORDER BY EmailAddress DESC
+
+SELECT
+a.JobID,
+a.SubscriberKey,
+a.EventDate,
+b.DeliveredTime,
+b.EmailName,
+a.AccountID
+FROM
+_sent a
+INNER JOIN
+_job b
+ON a.JobID = b.JobID
+WHERE
+b.EmailName LIKE '2305_REF1235853_RxBeforeCall_MC_MEM_PR'
+AND DeliveredTime IS NOT NULL
+
+
+
+Picking rows with partitions
+select
+  x.bounceCategory
+, x.sendid
+from (
+  select
+    b.bounceCategory
+  , b.sendid
+  , row_number() over (partition by b.bounceCategory order by newid()) ranking
+  from _bounce b
+) x 
+where x.ranking = 1
