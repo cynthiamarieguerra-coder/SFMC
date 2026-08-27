@@ -1,0 +1,35 @@
+SELECT
+oeb.Origin,
+oeb.PLN_MBR_BK,
+oeb.MKT_LOB,
+oeb.EmailAddress,
+oeb.CampaignName,
+bue.Send_Date,
+bue.Bounce_Status
+FROM
+[240917_REF2007491_ANOC_MC_MEM_OP] oeb
+LEFT JOIN
+ (SELECT
+OEB.PLN_MBR_BK,
+OEB.EmailAddress,
+OEB.CampaignName,
+OEB.MKT_LOB,
+OEB.Origin,
+esl.SendTime as [Send_Date],
+bue.BounceCategory as [Bounce_Status]
+FROM
+[240917_REF2007491_ANOC_MC_MEM_OP] OEB
+LEFT JOIN
+[Email Send Log] esl
+ON
+OEB.PLN_MBR_BK = esl.PLN_MBR_BK
+LEFT JOIN
+[_Bounce] bue
+ON
+OEB.PLN_MBR_BK = bue.SubscriberKey
+AND
+esl.JobID = bue.JobID
+WHERE
+esl.JobID IN (780594, 780595))  bue 
+ON
+oeb.PLN_MBR_BK = bue.PLN_MBR_BK
