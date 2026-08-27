@@ -1,0 +1,165 @@
+Multiple Folders and DE
+<script runat="server">
+Platform.Load("Core","1");
+
+var api = new Script.Util.WSProxy();
+
+/******************************************************************
+ ONLY UPDATE THESE VALUES
+******************************************************************/
+
+var parentFolderId = 167715; // Q3 2026
+
+var projects = [
+
+    "260819_REF3755200_YouAndBlue_XLOB_MEM_PR",
+
+    "260818_REF3837900_TJs_BH_SB729_Maven_Benefits_PRMR_MEM_PR",
+
+    "260813_REF3436700_Spanish_BehavioralHealth_DSNP_MC_MEM_PR"
+
+    // ADD MORE PROJECTS HERE
+    // "260901_REF1234567_ProjectName_MEM_PR",
+    // "260902_REF7654321_AnotherProject_MEM_PR"
+
+];
+
+/******************************************************************
+ DO NOT EDIT BELOW THIS LINE
+******************************************************************/
+
+for (var i = 0; i < projects.length; i++) {
+
+    var projectName = projects[i];
+
+    try {
+
+        /*************************************************
+         CREATE FOLDER
+        *************************************************/
+
+        var folderConfig = {
+            Name: projectName,
+            Description: projectName,
+            ContentType: "dataextension",
+            IsActive: true,
+            IsEditable: true,
+            AllowChildren: true,
+            ParentFolder: {
+                ID: parentFolderId,
+                IDSpecified: true
+            }
+        };
+
+        var folderResult = api.createItem(
+            "DataFolder",
+            folderConfig
+        );
+
+        var newFolderId = folderResult.Results[0].NewID;
+
+        Write("<br>Folder Created: " + projectName);
+
+        /*************************************************
+         CREATE DATA EXTENSION
+        *************************************************/
+
+        var deConfig = {
+
+            CustomerKey: projectName,
+            Name: projectName,
+            Description: projectName,
+            CategoryID: newFolderId,
+
+            Fields: [
+
+                {
+                    Name: "PLN_MBR_BK",
+                    FieldType: "Text",
+                    MaxLength: 100,
+                    IsPrimaryKey: true,
+                    IsRequired: true
+                },
+
+                {
+                    Name: "EmailAddress",
+                    FieldType: "EmailAddress",
+                    IsRequired: true
+                },
+
+                {
+                    Name: "CampaignName",
+                    FieldType: "Text",
+                    MaxLength: 100
+                },
+
+                {
+                    Name: "Origin",
+                    FieldType: "Text",
+                    MaxLength: 50
+                },
+
+                {
+                    Name: "MKT_LOB",
+                    FieldType: "Text",
+                    MaxLength: 250
+                },
+
+                {
+                    Name: "Gender",
+                    FieldType: "Text",
+                    MaxLength: 25
+                },
+
+                {
+                    Name: "Age",
+                    FieldType: "Number"
+                },
+
+                {
+                    Name: "Segment2",
+                    FieldType: "Text",
+                    MaxLength: 100
+                },
+
+                {
+                    Name: "LOB",
+                    FieldType: "Text",
+                    MaxLength: 100
+                }
+
+            ],
+
+            IsSendable: true,
+            IsTestable: true,
+
+            SendableDataExtensionField: {
+                Name: "PLN_MBR_BK"
+            },
+
+            SendableSubscriberField: {
+                Name: "Subscriber Key"
+            }
+        };
+
+        api.createItem(
+            "DataExtension",
+            deConfig
+        );
+
+        Write("<br>DE Created: " + projectName);
+
+    } catch(e) {
+
+        Write(
+            "<br>ERROR creating " +
+            projectName +
+            ": " +
+            Stringify(e)
+        );
+
+    }
+}
+
+Write("<br><br>Completed.");
+</script>
