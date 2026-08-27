@@ -1,0 +1,79 @@
+SELECT
+oeb.Origin,
+oeb.PLN_MBR_BK,
+oeb.MKT_LOB,
+oeb.EmailAddress,
+oeb.Subscriber_Rate_Area,
+oeb.Rate_Effective_Date,
+oeb.CampaignName,
+bue.Send_Date,
+bue.Bounce_Status
+FROM
+[211118_REF640183_MonthlyOEBirthdayValue_MS_MEM_OP] oeb
+LEFT JOIN
+ (SELECT
+OEB.PLN_MBR_BK,
+OEB.EmailAddress,
+OEB.Subscriber_Rate_Area,
+OEB.Rate_Effective_Date,
+OEB.CampaignName,
+OEB.MKT_LOB,
+OEB.Origin,
+esl.SendTime as [Send_Date],
+bue.BounceCategory as [Bounce_Status]
+FROM
+[211118_REF640183_MonthlyOEBirthdayValue_MS_MEM_OP] OEB
+LEFT JOIN
+[Email Send Log] esl
+ON
+OEB.PLN_MBR_BK = esl.PLN_MBR_BK
+LEFT JOIN
+[_Bounce] bue
+ON
+OEB.PLN_MBR_BK = bue.SubscriberKey
+AND
+esl.JobID = bue.JobID
+WHERE
+esl.JobID = 198707) bue 
+
+ON
+oeb.PLN_MBR_BK = bue.PLN_MBR_BK
+
+
+
+SELECT
+oeb.Origin,
+oeb.PLN_MBR_BK,
+oeb.MKT_LOB,
+oeb.EmailAddress,
+oeb.CampaignName,
+bue.Send_Date,
+bue.Bounce_Status
+FROM
+[2309_REF1482680_RxBeforeCall_IFP_MEM_PR] oeb
+LEFT JOIN
+ (SELECT
+OEB.PLN_MBR_BK,
+OEB.EmailAddress,
+OEB.CampaignName,
+OEB.MKT_LOB,
+OEB.Origin,
+esl.SendTime as [Send_Date],
+bue.BounceCategory as [Bounce_Status]
+FROM
+[2309_REF1482680_RxBeforeCall_IFP_MEM_PR] OEB
+LEFT JOIN
+[Email Send Log] esl
+ON
+OEB.PLN_MBR_BK = esl.PLN_MBR_BK
+LEFT JOIN
+[_Bounce] bue
+ON
+OEB.PLN_MBR_BK = bue.SubscriberKey
+AND
+esl.JobID = bue.JobID
+WHERE
+esl.JobID = 602407) bue 
+
+ON
+oeb.PLN_MBR_BK = bue.PLN_MBR_BK
