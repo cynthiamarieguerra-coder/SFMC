@@ -1,0 +1,27 @@
+SELECT 
+    EmailAddress,
+    COUNT(DISTINCT SubscriberKey) AS SubscriberKeyCount  
+FROM 
+    _Subscribers  
+GROUP BY 
+    EmailAddress  
+HAVING 
+    COUNT(DISTINCT SubscriberKey) > 1
+    
+    count of duplicates
+    _____________________________________
+    
+    list of duplicates
+    
+    SELECT 
+    EmailAddress,
+    SubscriberKey  
+FROM 
+    _Subscribers  
+WHERE 
+    EmailAddress IN (
+        SELECT EmailAddress  
+        FROM _Subscribers  
+        GROUP BY EmailAddress  
+        HAVING COUNT(*) > 1  
+    )
