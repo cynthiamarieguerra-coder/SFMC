@@ -1,0 +1,28 @@
+SELECT 
+    j.journeyname,
+    j.versionnumber,
+    ja.activityname AS [EmailName],
+    s.eventdate AS [SendTime],
+    de.emailaddress,
+    s.subscriberkey,
+    s.subscriberid AS [ContactID],
+    s.jobid,
+    s.listid,
+    s.batchid,
+    b.EventDate,
+    b.BounceCategory AS [Bounce_Status],
+    de.Group_ID
+FROM 
+    [_sent] AS s  
+FULL JOIN 
+    [_journeyactivity] AS ja ON s.triggerersenddefinitionobjectid = ja.journeyactivityobjectid  
+FULL JOIN 
+    [_journey] AS j ON ja.versionid = j.versionid  
+FULL JOIN 
+    [_subscribers] AS su ON s.subscriberid = su.subscriberid  
+LEFT JOIN 
+    [_bounce] AS b ON s.subscriberkey = b.subscriberkey AND s.jobid = b.jobid  
+ FULL JOIN 
+    [DM_Employer] AS de ON s.subscriberkey = de.PLN_MBR_BK
+WHERE 
+    j.journeyname = '2024b_NewEmployerWelcome_SBM_EMP_PR'
