@@ -1,0 +1,8 @@
+SELECT TOP 1000 c.JobID, MAX(j.EmailName) AS EmailName, c.LinkName, c.URL, c.IsUnique, count(distinct c.SubscriberID) as Total_Count
+FROM _Click c WITH (NOLOCK)
+INNER JOIN _Job j WITH (NOLOCK) ON j.JobID = c.JobID
+where c.JobID IN ('575250')
+and c.IsUnique = 'true'
+and c.LinkName LIKE ('%https://cloud.info.blueshieldca.com%')
+GROUP BY c.jobid, c.URL, c.LinkName, c.IsUnique
+ORDER BY c.jobid, count(distinct c.SubscriberID) desc
