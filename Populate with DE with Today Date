@@ -1,0 +1,10 @@
+SELECT
+PLN_MBR_BK,
+CampaignName,
+Origin,
+MKT_LOB,
+Organization,
+PCC_PH,
+GETDATE() as Entry_Date
+FROM
+[230509_REF1235853_RxBeforeCall_MC_MEM_PR]
