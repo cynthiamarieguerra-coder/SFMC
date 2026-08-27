@@ -1,0 +1,38 @@
+SELECT
+job.JobID, 
+ja.JourneyActivityObjectID, 
+s.SubscriberID, 
+s.SubscriberKey, 
+sub.EmailAddress, 
+sub.Status AS SubscriptionStatus, 
+j.JourneyName, 
+job.EmailName,
+job.EmailSubject,
+job.FromName,
+job.FromEmail,
+s.TriggererSendDefinitionObjectID,
+s.TriggeredSendCustomerKey,
+s.EventDate,
+job.DeliveredTime,
+x.NumberOfClicks,
+x.NumberOfOpens
+FROM _Sent s
+INNER JOIN _Job AS job ON job.JobID = s.JobID
+INNER JOIN _JourneyActivity AS ja ON ja.JourneyActivityObjectID = s.TriggererSendDefinitionObjectID
+INNER JOIN _Journey AS j ON j.VersionID = ja.VersionID
+INNER JOIN ent._Subscribers AS sub ON sub.SubscriberID = s.SubscriberID
+LEFT JOIN 
+    (SELECT
+    s.SubscriberKey,
+    COUNT(c.SubscriberKey) AS NumberOfClicks,
+    COUNT(o.SubscriberKey) AS NumberOfOpens
+    FROM [_Sent] s
+    INNER JOIN [_JourneyActivity] ja ON s.TriggererSendDefinitionObjectID = ja.JourneyActivityObjectID
+    INNER JOIN [_Journey] j ON ja.VersionID = j.VersionID
+    LEFT JOIN [_Click] c ON s.JobID = c.JobID AND s.ListID = c.ListID AND s.BatchID = c.BatchID AND s.SubscriberID = c.SubscriberID
+    LEFT JOIN [_Open] o ON s.JobID = o.JobID AND s.ListID = o.ListID AND s.BatchID = o.BatchID AND s.SubscriberID = o.SubscriberID
+    WHERE j.JourneyName = '230605_REF1256706_PCP_Incentive_IFP_MEM_PR'
+
+    GROUP BY s.SubscriberKey) x
+    ON s.SubscriberKey = x.SubscriberKey
+WHERE j.JourneyName = '230605_REF1256706_PCP_Incentive_IFP_MEM_PR'
