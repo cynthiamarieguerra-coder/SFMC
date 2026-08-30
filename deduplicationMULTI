@@ -1,0 +1,71 @@
+
+select
+x.ID,
+x.email
+from (
+  select distinct 
+  d.ID,
+  d.email
+  , row_number() over(partition by d.email order by d.ID) as rowNum
+  from Contact_SALESFORCE as d
+) x
+where x.rowNum = 1
+
+
+clicks and unsubscribes
+
+Select a.PLN_MBR_BK, b.EventDate as Click_Date,b.IsUnique as Unique_Click, b.LinkContent as URL, c.EventDate as Unsubscribe_Date
+from [221004_REF850339_MXImprovements_XLOB_MEM_PR] a
+join _click b on b.subscriberkey = a.PLN_MBR_BK
+Join _unsubscribe c on c.subscriberkey = a.PLN_MBR_BK
+where b.jobid = 380418
+AND (b.IsUnique = 1)
+
+___________________
+send log github
+
+
+https://gist.github.com/sam-law/c3d0cd2e9ce1e5ed7dcb2c24a544a2e2
+
+/* 
+  This is based on the Salesforce query https://help.salesforce.com/articleView?id=mc_as_query_journey_builder_sends_in_last_24_hours.htm&type=5
+  Remember you need to create your data extension first that contains the fields noted below. 
+    You do this in Email Studio -> Subscribers -> Data Extensions
+  Create this extract script in Journey Builder -> Automation Studio -> Activities -> SQL_QUERY 
+*/
+
+/* 
+  Below are the fields we are going to put into the final data extension.
+  For a list of fields and each Data view these standard fields are held in, see this: https://help.salesforce.com/articleView?id=mc_as_data_views.htm&type=5
+*/
+select
+    j.JourneyName,
+    ja.ActivityName as 'EmailName', /* We are storing this information into a field that has a different name than the original data */
+    s.EventDate as 'SendTime',
+    su.EmailAddress,
+    su.SubscriberKey,
+    s.SubscriberID,
+    cpd.DataExtension1Field as 'Data Extension Field 1', /* These are the fields from our pre-existing data extension */
+    cpd.DataExtension1Field2 as 'Data Extension Field 2'
+from
+    [_Sent] s
+join
+    [_JourneyActivity] ja 
+on
+    s.TriggererSendDefinitionObjectID = ja.JourneyActivityObjectID
+join
+    [_Journey] j
+on
+    ja.VersionID = j.VersionID
+join
+    [_Subscribers] su
+on
+    s.SubscriberID = su.SubscriberID
+INNER JOIN
+    [DataExtension1] AS cpd /* This is where we note the data extension we are going to connect it to */
+ON
+    CPD.DataExtension1Key = su.SubscriberKey /* This is where we match our data extension key to subscriber key or some other value that identifies the row in both places */
+where /* we are filtering the results */
+    ja.ActivityType in  ('EMAIL','EMAILV2') /* We are only including emails */
+    and j.JourneyName in ('Journey 1','Journey 2') /* We are only including these two journeys */
+    and s.EventDate < dateadd(hh,-1,getdate()) /* We are including data that is more than an hour old /*
