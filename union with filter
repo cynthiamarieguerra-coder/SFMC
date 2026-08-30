@@ -1,0 +1,414 @@
+SELECT
+A.PLN_MBR_BK,
+A.EmailAddress,
+'DAP183430' as CampaignName,
+'CT' as Origin,
+'Brokers' as MKT_LOB
+FROM
+[DM_Producer] A
+WHERE
+EmailAddress is not null AND
+(
+CORE = 'Y'
+OR
+Small_Bus = 'Y' OR
+Premier = 'Y'OR
+Small_Bus = 'Y'OR
+IFP = 'Y'
+OR
+GMAPD_PDP = 'Y'
+OR
+IMAPD_PDP  = 'Y'
+OR
+Med_Sup  = 'Y'
+)
+UNION
+SELECT
+B.PLN_MBR_BK,
+B.EmailAddress,
+B.CampaignName,
+B.Origin,
+B.MKT_LOB
+FROM
+[seed_241126_DAP183430_RxReimaginedNewsletter_XLOB_BKR_OP] B
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+_____________________
+SELECT
+A.PLN_MBR_BK,
+A.EmailAddress,
+'DAP181680' as CampaignName,
+'CT' as Origin,
+'Employers' as MKT_LOB
+FROM
+[DM_Employer] A
+WHERE
+EmailAddress is not null AND
+(
+CORE = 'Y'
+OR
+Small_Bus = 'Y' OR
+Premier = 'Y'
+)
+UNION
+SELECT
+B.PLN_MBR_BK,
+B.EmailAddress,
+B.CampaignName,
+B.Origin,
+B.MKT_LOB
+FROM
+[Seed_240719_DAP181680_CloudStrikeOutage_XLOB_EMP_OP] B
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SELECT
+A.PLN_MBR_BK,
+A.EmailAddress,
+'DAP181362' as CampaignName,
+'CT' as Origin,
+'Brokers' as MKT_LOB
+FROM
+[DM_Producer] A
+WHERE
+EmailAddress is not null AND
+(
+GMAPD_PDP = 'Y'
+OR
+IMAPD_PDP  = 'Y'
+OR
+Med_Sup  = 'Y'
+)
+UNION
+SELECT
+B.PLN_MBR_BK,
+B.EmailAddress,
+B.CampaignName,
+B.Origin,
+B.MKT_LOB
+FROM
+[Seed_240710_DAP181362_Certification_MC_BRK_OP] B
+
+9.21.
+
+SELECT
+A.PLN_MBR_BK,
+A.Email as EmailAddress,
+'DAP178502' as CampaignName,
+'CT' as Origin,
+'Employers' as MKT_LOB
+FROM
+[DM_Employer] A
+WHERE
+Email is not null AND
+(
+CORE = 'Y'
+OR
+Small_Bus = 'Y' OR
+Premier = 'Y'
+)
+UNION
+SELECT
+B.PLN_MBR_BK,
+B.EmailAddress,
+B.CampaignName,
+B.Origin,
+B.MKT_LOB
+FROM
+[seed_230922_DAP178502_GagClausesFullyInsured_XLOB_EMP_OP] B
+
+_______________________
+
+
+SELECT
+A.PLN_MBR_BK,
+A.EmailAddress,
+'DAP174160' as CampaignName,
+'CT' as Origin,
+'Brokers' as MKT_LOB
+FROM
+[DM_Producer] A
+WHERE
+EmailAddress is not null AND
+(
+CORE = 'Y'
+OR
+Small_Bus = 'Y'
+)
+UNION
+SELECT
+B.PLN_MBR_BK,
+B.EmailAddress,
+B.CampaignName,
+B.Origin,
+B.MKT_LOB
+FROM
+[seed_230228_DAP174160_GroupNewsletter_XLOB_BKR_OP] B
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	SELECT
+A.PLN_MBR_BK,
+A.EmailAddress,
+'DAP172974' as CampaignName,
+'CT' as Origin,
+'Brokers' as MKT_LOB
+FROM
+[DM_Producer] A
+WHERE
+EmailAddress is not null AND
+(
+Small_Bus = 'Y'
+)
+UNION
+SELECT
+B.PLN_MBR_BK,
+B.EmailAddress,
+B.CampaignName,
+B.Origin,
+B.MKT_LOB
+FROM
+[seed_for_230131_DAP173404_Newsletter_SBM_BKR_OP] B
+
+
+
+
+-----------
+SELECT
+A.PLN_MBR_BK,
+A.Email as EmailAddress,
+'DAP172974' as CampaignName,
+'CT' as Origin,
+'Employers' as MKT_LOB
+FROM
+[DM_Employer] A
+WHERE
+Email is not null AND
+(
+Small_Bus = 'Y'
+)
+UNION
+SELECT
+B.PLN_MBR_BK,
+B.Email as EmailAddress,
+B.CampaignName,
+B.Origin,
+B.MKT_LOB
+FROM
+[seed_for_230131_DAP173404_Newsletter_SBM_BKR_OP] B
+
+
+
+
+
+---------------------------------
+SELECT
+A.PLN_MBR_BK,
+A.Email,
+'DAP172974' as CampaignName,
+'CT' as Origin,
+'Employers' as MKT_LOB
+FROM
+[DM_Employer] A
+WHERE
+Email is not null AND
+(
+Small_Bus = 'Y'
+)
+UNION
+SELECT
+B.PLN_MBR_BK,
+B.Email,
+B.CampaignName,
+B.Origin,
+B.MKT_LOB
+FROM
+[seed_for_230131_DAP173404_Newsletter_SBM_BKR_OP] B
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SELECT
+A.PLN_MBR_BK,
+A.Email,
+'DAP172974' as A.CampaignName,
+'CT' as A.Origin,
+'Employers' as A.MKT_LOB
+FROM
+[DM_Employer] A
+WHERE
+Email is not null AND
+(
+Small_Bus = 'Y'
+)
+
+UNION
+SELECT
+B.PLN_MBR_BK,
+B.Email,
+B.CampaignName,
+B.Origin,
+B.MKT_LOB
+FROM
+[seed_for_230131_DAP173404_Newsletter_SBM_BKR_OP] B
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SELECT
+A.PLN_MBR_BK,
+A.EmailAddress,
+'DAP172974' as A.CampaignName,
+'CT' as A.Origin,
+'Brokers' as A.MKT_LOB
+FROM
+[DM_Producer] A
+WHERE
+EmailAddress is not null AND
+(
+IFP = 'Y'
+)
+UNION
+SELECT
+B.PLN_MBR_BK,
+B.EmailAddress,
+B.CampaignName,
+B.Origin,
+B.MKT_LOB
+FROM
+[230106_DAP172974_RadyExtension_XLOB_BKR_OP] B
+
+
+-------------------
+
+Select
+A.PLN_MBR_BK,
+A.EmailAddress, 
+'DAP172974' as A.CampaignName,
+'CT' as A.Origin,
+'Brokers' as A.MK_LOB
+FROM [DM_Producer] A
+WHERE
+EmailAddress is not null AND
+(CORE = 'Y'
+OR
+IFP = 'Y'
+OR
+Small_Bus = 'Y'
+OR
+PREMIER = 'Y'
+)
+UNION
+Select 
+B.PLN_MBR_BK,
+B.EmailAddress, 
+B.CampaignName,    
+B.Origin,
+B.MKT_LOB
+FROM 
+[230106_DAP172974_RadyExtension_XLOB_BKR_OP] B
+
+
+
+
+
+Select 
+a.PLN_MBR_BK,
+a.EmailAddress, 
+a.CampaignName,	
+a.Origin,	
+a.MKT_LOB
+from [230208_DAP173710_Newsletter_MC_BKR_OP] a
+Union 
+Select
+b.PLN_MBR_BK,
+b.EmailAddress, 
+b.CampaignName,	
+b.Origin,	
+b.MKT_LOB
+from [Custom_data_230208_DAP173710_Newsletter_MC_BKR_OP] b
+Union 
+Select
+c.PLN_MBR_BK,
+c.EmailAddress, 
+c.CampaignName,	
+c.Origin,	
+c.MKT_LOB
+from [Seed_for_230208_DAP173710_Newsletter_MC_BKR_OP] c
+
+
+
+
+
+
