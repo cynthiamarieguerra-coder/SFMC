@@ -1,0 +1,82 @@
+Select 
+a.PLN_MBR_BK,
+a.EmailAddress, 
+a.CampaignName,	
+a.Origin,	
+a.MKT_LOB,
+a.Gender,
+a.Age,
+a.Segment2,
+a.LOB
+from [	250606_REF2471400_YB_other_Spotlight_XLOB_MEM_PR] a
+Union 
+Select
+b.PLN_MBR_BK,
+b.EmailAddress, 
+b.CampaignName,	
+b.Origin,	
+b.MKT_LOB,
+b.Gender,
+b.Age,
+b.Segment2,
+b.LOB
+from [250606_REF2471400_YB_IFP_Spotlight_XLOB_MEM_PR] b
+
+
+
+Select 
+a.PLN_MBR_BK,
+a.EmailAddress, 
+a.CampaignName,	
+a.Origin,	
+a.MKT_LOB,
+a.Gender,
+a.Segment2,
+a.LOB
+
+from [IFP_240712_REF1822100_YouAndBlueNPS_XLOB_MEM_PR] a
+Union 
+Select
+b.PLN_MBR_BK,
+b.EmailAddress, 
+b.CampaignName,	
+b.Origin,	
+b.MKT_LOB,
+b.Gender,
+b.Segment2,
+b.LOB
+from [no_IFP_240712_REF1822100_YouAndBlueNPS_XLOB_MEM_PR] b
+
+
+
+
+
+
+
+
+
+
+
+Select 
+a.PLN_MBR_BK,
+a.EmailAddress, 
+a.CampaignName,	
+a.Origin,	
+a.MKT_LOB
+from [230503_REF1169977_YouAndBlueNPS_FP_XLOB_MEM_PR] a
+Union 
+Select
+b.PLN_MBR_BK,
+b.EmailAddress, 
+b.CampaignName,	
+b.Origin,	
+b.MKT_LOB
+from [230503_REF1169977_YouAndBlueNPS_AB_XLOB_MEM_PR] b
+Union 
+Select
+b.PLN_MBR_BK,
+b.EmailAddress, 
+b.CampaignName,	
+b.Origin,	
+b.MKT_LOB
+from [seed_for_230503_REF1169977_YouAndBlueNPS_XLOB_MEM_PR] c
