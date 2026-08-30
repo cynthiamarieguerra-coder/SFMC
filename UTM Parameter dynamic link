@@ -1,0 +1,15 @@
+resourcees
+https://git.coop/-/snippets/70
+
+%%[set @url = link]%%
+<!-- Solid Button: Desktop: Fluid Width, Mobile: Full Width (no rounded corners on Outlook!) --><table border="0" cellpadding="0" cellspacing="0" width="100%">
+ 
+  <tr>
+   <td align="left" class="pad-20LR" style="padding-left:40px;" valign="top">
+    <table border="0" cellpadding="0" cellspacing="0">
+     
+      <tr>
+       <td align="center" bgcolor="#0071bc" style="-webkit-border-radius: 35px; -moz-border-radius: 35px; border-radius: 35px;">
+        <!--[if mso]>&nbsp;&nbsp;&nbsp;<![endif]--><a alias="Take the survey" conversion="false" data-linkto="other" 
+        href="%%=RedirectTo(Concat(@url,Substring('?',1,0)))=%%"
+        style="color:#ffffff;text-decoration:none;font-family: 'Fieldwork', 'Roboto', Arial, sans-serif; font-weight: 600; font-size: 16px; text-transform: none; padding: 17px 30px; border: 2px solid #0071bc; -webkit-border-radius: 35px; -moz-border-radius: 35px; border-radius: 35px; display: block;" target="_blank" title="Take the survey">Take the survey</a> <!--[if mso]>&nbsp;&nbsp;&nbsp;<![endif]--></td></tr></table></td></tr></table>
