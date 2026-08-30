@@ -1,0 +1,66 @@
+Populate a DE
+
+
+SELECT
+MBR_ID,
+EmailAddress,
+'DP163' as CampaignName,
+'CT' as Origin,
+'Brker' as MKT_LOB
+FROM
+[DE]
+WHERE
+EmailAddress is not null AND
+(MAPD_PDP = 'Y'OR
+APD_PDP = 'Y' OR
+Med_Sup = 'Y'
+)
+
+
+SELECT
+PLN_MBR_BK,
+EmailAddress,
+'DAP162102' as CampaignName,
+'CT' as Origin,
+'Brokers' as MK_LOB
+FROM
+[DM_Procer]
+WHERE
+EmailAddress is not null AND
+(Small_Bus = 'Y'
+)
+_________________________
+join
+select t.Email as EmailAddress, d.PLN_BK, d.LOB, d.MEM_DOB
+from DE t
+join DM_Member d on t.email = d.EmailAddress
+
+____________________--
+null
+Select _ContactKey as ContactKey, Id, ConvertedAccountId, ConvertedContactID, Email, HasOptedOutofEmail, RecordTypeId, 
+Status, CreatedDate, FirstName, LastName, Market_Code__c, Record_Type_Name__c, PostalCode, Date_of_Birth__c
+from ent.Lead_Salesforce
+where Market_Coe__c is not null
+
+Select _ContactKey as ContactKey, Id, ConvertedAccountId, ConvertedContactID, Email, HasOptedOutofEmail, RecordTypeId, 
+Status, CreatedDate, FirstName, LastName, Market_Code__c, Record_Type_Name__c, PostalCode, Date_of_Birth__c
+from ent.Lead_Salesforce
+where Market_Code__c is not null
+
+
+____________________________
+Multiple condition
+Select l._ContactKey as ContactKey, l.Id, l.Email, l.RecordTypeId, 
+l.Status, l.CreatedDate, l.FirstName, l.LastName, l.Market_Code__c, l.Record_Type_Name__c, l.PostalCode, l.Date_of_Birth__c, l.Most_Recent_Campaign__c
+from ent.Lead_Salesfrce l
+join wnderman_campaign_list_matches w on w.CampaignId = l.Most_Recent_Campaign__c
+where ConvertedContactID is null
+and HasOptedOutofEmail = 'False'
+and RecordTypeId = '01213000001CF9jAAG'
+and Date_of_Birth__c is not null
+___________________________________
+Left Outer Join
+
+Select s.contactkey, s.RecordTypeId, s.Record_Type_Name__c, s.Email, s.Fets_Subscriber_id__c, s.LeadSrce, s.Market_Code__c, s.Date_of_Birth__c, s.FirstName, s.LastName, d.SUFFIX, d.PLN_R_BK, d.FIRST, d.LAST, d.MEM_DOB, d.LOB
+from [SL Leads wDE] s
+left outer join [DM_Member] d on d.SUB_ID = s.Fats_Subscriber_id__c and d.EmailAddress = s.Email and d.FIRST = s.FirstName and d.LAST = s.LastName
