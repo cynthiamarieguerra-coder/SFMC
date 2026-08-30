@@ -1,0 +1,1 @@
+Every link that's populated by amscript needs to be written as %%=RedirectTo(@Tip)=%% --- where @Tip is the variable where the URL is stored. If you're just populating a string, for example someone's name, then the syntax is %%=v(@firstName)=%%.
