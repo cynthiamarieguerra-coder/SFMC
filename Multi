@@ -1,0 +1,428 @@
+send log exe
+
+Select
+    esl.JobID
+    ,esl.ListID
+    ,esl.BatchID
+    ,esl.PLN_MBR_BK   
+    ,esl.JourneyName
+    ,esl.SendTime   
+    ,esl.SubjectLine   
+    ,esl.EmailName   
+    ,esl.EmailAddress   
+    ,esl.HLTHCR_CONSU_PERS_KEY 
+    ,esl.MKT_LOB
+    ,esl.CampaignName   
+    ,esl.LOB     
+From
+    [Email Send Log] esl
+where month(esl.SendTime)=4 and year(esl.SendTime)=2022 and day(esl.SendTime)=22
+
+
+Select
+     esl.JobID
+    ,esl.PLN_MBR_BK   
+    ,esl.JourneyName
+    ,esl.SendTime   
+    ,esl.EmailName   
+    ,esl.EmailAddress   
+    ,esl.MKT_LOB
+    ,esl.CampaignName   
+From
+    [Email Send Log] esl
+WHERE esl.JobID = 380418
+
+Outer Join %
+
+Select A.PLN_MBR_BK, 
+A.EmailAddress, 
+A.JobID,
+dm.LOB, 
+dm.FIRST, 
+dm.LAST,
+A.BatchID, 
+A.ListID, 
+A.SendTime, 
+A.EmailName
+from [Email Send Log] A
+left outer join [DM_Member] dm on dm.PLN_MBR_BK = A.PLN_MBR_BK
+where A.EmailName LIKE ('%CalPERSAgein%')
+and A.PLN_MBR_BK is not null
+____________________________________________
+B2B Union
+
+
+Select 
+a.PLN_MBR_BK,
+a.EmailAddress, 
+a.CampaignName,	
+a.Origin,	
+a.MKT_LOB
+from [220930_DAP165875_Newsletter_IFP_BKR_OP] a
+Union 
+Select
+b.PLN_MBR_BK,
+b.EmailAddress, 
+b.CampaignName,	
+b.Origin,	
+b.MKT_LOB
+from [Seed_for_220930_DAP165875_Newsletter_IFP_BKR_OP] b
+
+
+
+
+
+
+----------------------
+
+//Sample Query for Filtered Data//
+
+
+
+
+
+
+
+
+SELECT
+PLN_MBR_BK,
+EmailAddress,
+'DAP165875' as CampaignName,
+'CT' as Origin,
+'Brokers' as MKT_LOB
+FROM
+[DM_Producer]
+WHERE
+EmailAddress is not null AND
+(IFP = 'Y'
+)
+
+
+------------
+
+SELECT
+PLN_MBR_BK,
+Email as EmailAddress,
+'DAP164736' as CampaignName,
+'CT' as Origin,
+'Brokers' as MKT_LOB
+FROM
+[DM_Producer]
+WHERE
+EmailAddress is not null AND
+(IFP = 'Y'
+)
+
+
+
+SELECT
+PLN_MBR_BK,
+EmailAddress,
+'DAP162234' as CampaignName,
+'CT' as Origin,
+'Brokers' as MKT_LOB
+FROM
+[DM_Producer]
+WHERE
+EmailAddress is not null AND
+(GMAPD_PDP = 'Y'OR
+IMAPD_PDP = 'Y'OR
+Med_Sup ='Y'
+)
+
+
+
+//Sample Query for Union all//
+Select 
+a.PLN_MBR_BK,
+a.EmailAddress, 
+a.CampaignName,	
+a.Origin,	
+a.MKT_LOB
+from [220906_REF924204_RoadshowReminder_SBM_BKR_PR] a
+Union 
+Select
+b.PLN_MBR_BK,
+b.EmailAddress, 
+b.CampaignName,	
+b.Origin,	
+b.MKT_LOB
+from [Seed_for_220906_REF924204_RoadshowReminder_SBM_BKR_PR] b
+
+______________________________
+select convert(date, Date_of_Birth__c) as Birthday,
+Email
+
+from ent.Lead_Salesforce
+where DATEPART("month", Date_of_Birth__c) = DATEPART("month", GetDate())
+AND DATEPART("day", Date_of_Birth__c) = DATEPART("day", GetDate())
+
+--------------------------------------------------------------------------
+Birthdate = Today or in 7 days + >= Year
+
+SELECT
+convert(date, Date_of_Birth__c) as Birthday
+
+FROM ent.Lead_Salesforce
+WHERE
+
+DATEPART(day,Date_of_Birth__c) = DATEPART(day,DATEADD(day,7,GETDATE())) AND
+DATEPART(month,Date_of_Birth__c) = DATEPART(month,DATEADD(day,7,GETDATE())) AND
+DATEPART("year", Date_of_Birth__c) >= 1957
+_____________________________________________________________________________________
+Left Group Join
+I'm using the following (and very handy) consolidation query to pull out sends, opens, clicks, bounces and unsubscribes grouped by journey name etc.:
+
+SELECT
+jou.JourneyName,
+jou.VersionNumber,
+j.EmailName,
+jou.JourneyStatus,
+COUNT(s.JobID) AS Sent,
+COUNT(o.JobID) AS Opened,
+COUNT(c.JobID) AS Clicked,
+COUNT(b.JobID) AS Bounced,
+COUNT(u.JobID) AS Unsubscribed
+FROM _Job j LEFT JOIN _Sent s ON j.JobID = s.JobID
+LEFT JOIN _Open o ON s.JobID = o.JobID and s.ListID = o.ListID and s.BatchID = o.BatchID and s.SubscriberID = o.SubscriberID and o.IsUnique = 1
+LEFT JOIN _Click c ON s.JobID = c.JobID  and s.ListID = c.ListID and s.BatchID = c.BatchID and s.SubscriberID = c.SubscriberID and c.IsUnique = 1
+LEFT JOIN _Bounce b ON s.JobID = b.JobID and s.ListID = b.ListID and s.BatchID = b.BatchID and s.SubscriberID = b.SubscriberID and b.IsUnique = 1
+LEFT JOIN _Unsubscribe u ON s.JobID = u.JobID and s.ListID = u.ListID and s.BatchID = u.BatchID and s.SubscriberID = u.SubscriberID and u.IsUnique = 1
+LEFT JOIN _JourneyActivity ja ON j.TriggererSendDefinitionObjectID = ja.JourneyActivityObjectID
+LEFT JOIN _Journey jou ON ja.VersionID = jou.VersionID
+WHERE jou.JourneyName IS NOT NULL AND jou.JourneyStatus = 'Running' <<<<<
+GROUP BY jou.JourneyName, jou.VersionNumber, jou.JourneyStatus, j.EmailName
+
+
+https://salesforce.stackexchange.com/questions/370086/how-to-get-unique-clicks-clicks-unique-opens-opens-with-one-sql-query
+
+
+
+
+
+
+
+SELECT  a.PLN_MBR_BK 
+,c.JobID as job_id
+,c.EventDate as click_date
+,c.IsUnique as is_unique
+,c.LinkName
+,c.URL
+FROM _Click c
+INNER JOIN [221004_REF850339_MXImprovements_XLOB_MEM_PR] a
+ON a.PLN_MBR_BK = c.SubscriberKey
+WHERE c.JobID = 380418
+AND IsUnique = 1
+
+_________________
+Select Distinct
+j.JourneyName,
+ja.ActivityName as EmailName,
+s.EventDate as SendTime,
+s.SubscriberKey,
+cpd.Age,
+cpd.MEM_DOB,
+c.IsUnique,
+cpd.EMAILADDRESS
+from
+[_Sent] s
+Left join
+[_JourneyActivity] ja 
+on
+s.TriggererSendDefinitionObjectID = ja.JourneyActivityObjectID
+Left join
+[_Journey] j
+on
+ja.VersionID = j.VersionID
+Left join
+[_Subscribers] su
+on
+s. SubscriberKey = su. SubscriberKey
+
+LEFT JOIN _Click AS c
+ON c. SubscriberKey = s. SubscriberKey and c.TriggererSendDefinitionObjectID = s.TriggererSendDefinitionObjectID
+
+Left JOIN
+[220616_REF753703_PhysicalFitness_XLOB_MEM_PR] AS cpd
+on
+cpd.PLN_MBR_BK = s.SubscriberKey
+WHERE
+j.JourneyName = '220616_REF753703_PhysicalFitness_XLOB_MEM_PR'
+AND (c.ISUNIQUE = 1 OR c.ISUNIQUE is Null)
+
+
+
+
+Select Distinct
+j.JourneyName,
+ja.ActivityName as EmailName,
+s.EventDate as SendTime,
+s.SubscriberKey,
+cpd.MKT_LOB,
+o.IsUnique,
+o.EventDate as Open_Date,
+cpd.EMAILADDRESS
+from
+[_Sent] s
+Left join
+[_JourneyActivity] ja 
+on
+s.TriggererSendDefinitionObjectID = ja.JourneyActivityObjectID
+Left join
+[_Journey] j
+on
+ja.VersionID = j.VersionID
+Left join
+[_Subscribers] su
+on
+s. SubscriberKey = su. SubscriberKey
+
+LEFT JOIN _Open AS o
+ON o. SubscriberKey = s. SubscriberKey and o.TriggererSendDefinitionObjectID = s.TriggererSendDefinitionObjectID
+
+Left JOIN
+[230712_REF1280648_ColorectalCancer_XLOB_MEM_PR] AS cpd
+on
+cpd.PLN_MBR_BK = s.SubscriberKey
+WHERE
+j.JourneyName = '230712_REF1280648_ColorectalCancer_XLOB_MEM_PR'
+AND (o.ISUNIQUE = 1)
+__________________________________________________________
+Send Log Physical Fitness Clicks
+
+
+Select Distinct
+j.JourneyName,
+ja.ActivityName as EmailName,
+s.EventDate as SendTime,
+s.SubscriberKey,
+cpd.MKT_LOB,
+c.IsUnique,
+c.EventDate as Click_Date,
+cpd.EMAILADDRESS
+from
+[_Sent] s
+Left join
+[_JourneyActivity] ja 
+on
+s.TriggererSendDefinitionObjectID = ja.JourneyActivityObjectID
+Left join
+[_Journey] j
+on
+ja.VersionID = j.VersionID
+Left join
+[_Subscribers] su
+on
+s. SubscriberKey = su. SubscriberKey
+
+LEFT JOIN _Click AS c
+ON c. SubscriberKey = s. SubscriberKey and c.TriggererSendDefinitionObjectID = s.TriggererSendDefinitionObjectID
+
+Left JOIN
+[230712_REF1280648_ColorectalCancer_XLOB_MEM_PR] AS cpd
+on
+cpd.PLN_MBR_BK = s.SubscriberKey
+WHERE
+j.JourneyName = '230712_REF1280648_ColorectalCancer_XLOB_MEM_PR'
+AND (c.ISUNIQUE = 1)
+______________________________________________________________-
+
+Left Outer Join1
+
+Select d.SubscriberKey as ContactKey, c.Email as EmailAddress, c.RecordTypeId as Lead_RecordTypeId, c.Record_Type_Name__c, c.LeadSource as Lead_LeadSource
+from [ Contacts and Leads Synched] d
+Left outer join ent.[Lead_Salsforce] c on c._ContactKey = d.SubscriberKey
+
+Select d.EmailAddress, d.SubscriberID, d.SubscriberKey, d.DateJoined, d.DateUnsubscribed, d.Status, d.Locale, d.SubscriberType, m.SUB_ID, m.SUFFIX
+from ent.[Ent_Duplicate_Subscribers_Detail] d
+left outer join DM_Member m on m.PLN_MBR_BK = d.SubscriberKey
+
+Select d.EmailAddress, d.SubscriberID, d.SubscriberKey, d.DateJoined, d.DateUnsubscribed, d.Status, d.Locale, d.SubscriberType, m.SBSCR_ID, m.PLN_MBR_ID_SUFX_NBR
+from ent.[Ent_Duplicate_Subscribers_Detail] d
+left outer join Member_Demographics m on m.PLN_MBR_BK = d.SubscriberKey
+
+________________________________________________________________________________
+Left Outer Join2
+
+Select d.SubscriberKey as ContactKey, c.Email as EmailAddress, c.RecordTypeId as Contact_RecordTypeId, c.RecordTypeName__c, c.IF_Contact__c as Contact_IP_Contact__c
+from [Contacts and Leads Synched] d
+Left outer join ent.[Contact_Salforce] c on c._ContactKey = d.SubscriberKey
+
+
+Select d.EmailAddress, s.SubscriberKey, s.SubscriberID, s.DateJoined, s.DateUnsubscribed, s.Status, s.Locale, s.SubscriberType
+from [Shldlink_Member_Duplicate_Counts] d
+join ent._Subscribers s on s.EmailAddress = d.EmailAddress
+_________________________________________________
+Group Join
+
+
+Select a.EmailAddress, a.contact_key_count
+from (select e.EmailAddress, count(e.SubscriberKey) as contact_key_count
+from ent._Subscribers e
+join [Shlink Contacts and Leads] s on e.EmailAddress = s.EmailAddress
+group by e.EmailAddress) a
+where a.contact_key_count > 1
+group by a.EmailAddress, a.contact_key_count
+___________________________________________________________
+union
+Select 
+a.PLN_MBR_BK,
+a.EmailAddress, 
+a.CampaignName,	
+a.Origin,
+a.gender,
+a.age,	
+a.lob,
+a.MKT_LOB
+from [220726_DAP162102_Newsletter_SBM_BKR_OP] a
+Union 
+Select
+b.PLN_MBR_BK,
+b.EmailAddress, 
+b.CampaignName,	
+b.Origin,
+b.gender,
+b.age,	
+b.lob,	
+b.MKT_LOB
+from [Seed_for_220726_DAP162102_Newsletter_SBM_BKR_OP] b
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Select 
+a.PLN_MBR_BK,
+a.EmailAddress, 
+a.CampaignName,	
+a.Origin,	
+a.MKT_LOB
+from [220726_DAP162102_Newsletter_SBM_BKR_OP] a
+Union 
+Select
+b.PLN_MBR_BK,
+b.EmailAddress, 
+b.CampaignName,	
+b.Origin,	
+b.MKT_LOB
+from [Seed_for_220726_DAP162102_Newsletter_SBM_BKR_OP] b
