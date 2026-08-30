@@ -1,0 +1,55 @@
+query_bounce_not_sent_220928_REF931812_SB368Rights_XLOB_MEM_OP
+
+
+automation = query
+
+SELECT
+OEB.PLN_MBR_BK,
+OEB.EmailAddress,
+OEB.MKT_LOB,
+oEB.CampaignName,
+OEB.Origin,
+esl.SendTime as [Send_Date],
+bue.BounceCategory as [Bounce_Status]
+FROM
+[220928_REF931812_SB368Rights_XLOB_MEM_OP] OEB
+
+LEFT JOIN
+[Email Send Log] esl
+ON
+OEB.PLN_MBR_BK = esl.PLN_MBR_BK
+LEFT JOIN
+[_Bounce] bue
+ON
+OEB.PLN_MBR_BK = bue.SubscriberKey
+AND
+esl.JobID = bue.JobID
+WHERE
+esl.JobID = 375745
+
+++++++++++++++++++++++++++++++++++++++++++++
+query studio send log query
+
+SELECT
+oeb.Origin,
+oeb.PLN_MBR_BK,
+oeb.MKT_LOB,
+oeb.EmailAddress,
+oeb.CampaignName,
+bue.Send_Date,
+bue.Bounce_Status
+FROM
+[220928_REF931812_SB368Rights_XLOB_MEM_OP] oeb
+LEFT JOIN
+[query_bounce_not_sent_220928_REF931812_SB368Rights_XLOB_MEM_OP] bue
+ON
+oeb.PLN_MBR_BK = bue.PLN_MBR_BK
+
+
+
+
+
+
+
+
+
